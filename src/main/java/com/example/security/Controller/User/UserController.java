@@ -1,4 +1,4 @@
-package com.example.security.Controller;
+package com.example.security.Controller.User;
 
 import com.example.security.DTO.*;
 import com.example.security.Service.UserService;
@@ -10,33 +10,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+//@RequestMapping("/users")
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @GetMapping
+    @GetMapping("/users/all/")
     public List<UserResponseDTO> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long ID) {
         return ResponseEntity.ok(userService.findUserById(ID));
     }
 
+    @GetMapping("/users/add/")
     @PostMapping
     public ResponseEntity<UserResponseDTO> addUser(@RequestBody @Valid UserRequestDTO userDTO) {
         return ResponseEntity.ok(userService.createUser(userDTO));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/users/{id}")
     public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long ID, @RequestBody @Valid UserRequestDTO userDTO) {
         return ResponseEntity.ok(userService.updateUser(ID, userDTO));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<UserResponseDTO> deleteUser(@PathVariable Long ID) {
         return ResponseEntity.ok(userService.deleteUser(ID));
     }

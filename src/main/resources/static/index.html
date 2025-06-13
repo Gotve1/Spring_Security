@@ -27,9 +27,9 @@
         };
 
         // Basic Auth: username "user", password ""
-        const credentials = btoa('tester:tester');
+        const credentials = btoa('superuser:superuser');
 
-        fetch('http://localhost:8080/users', {
+        fetch('http://localhost:8080/users/add/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
