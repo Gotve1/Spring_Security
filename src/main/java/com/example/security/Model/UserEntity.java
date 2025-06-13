@@ -17,9 +17,12 @@ public class UserEntity {
     private Long ID;
 
     @Column(nullable = false)
-    private String FirstName;
+    private String username;
 
     @Column(nullable = false)
-    private String LastName;
+    private String Password;
+
+    @Enumerated(EnumType.STRING)
+    private Roles Role;
 
 }

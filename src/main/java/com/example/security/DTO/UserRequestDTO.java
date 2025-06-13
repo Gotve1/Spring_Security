@@ -9,10 +9,10 @@ public class UserRequestDTO {
 
     @NotBlank(message = "Firstname is required")
     @Size(min = 6, max = 16)
-    private String Firstname;
+    private String username;
 
-    @NotBlank(message = "Lastname is required")
+    @NotBlank(message = "Password is required")
     @Size(min = 6, max = 16)
-    private String Lastname;
+    private String Password;
 
 }

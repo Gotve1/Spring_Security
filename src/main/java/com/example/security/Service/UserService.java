@@ -2,6 +2,7 @@ package com.example.security.Service;
 
 import com.example.security.DTO.UserRequestDTO;
 import com.example.security.DTO.UserResponseDTO;
+import com.example.security.Model.Roles;
 import com.example.security.Model.UserEntity;
 import com.example.security.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,9 @@ public class UserService {
 
     public UserResponseDTO createUser(UserRequestDTO dto) {
         UserEntity userEntity = new UserEntity();
-        userEntity.setFirstName(dto.getFirstname());
-        userEntity.setLastName(dto.getLastname());
+        userEntity.setUsername(dto.getUsername());
+        userEntity.setPassword(dto.getPassword());
+        userEntity.setRole(Roles.ROLE_USER); // Default role set to USER
         userEntity = userRepository.save(userEntity);
 
         return toResponseDTO(userEntity);
@@ -41,8 +43,8 @@ public class UserService {
 
     public UserResponseDTO updateUser(Long ID, UserRequestDTO dto) {
         UserEntity userEntity = getUserEntity(ID);
-        userEntity.setFirstName(dto.getFirstname());
-        userEntity.setLastName(dto.getLastname());
+        userEntity.setUsername(dto.getUsername());
+        userEntity.setPassword(dto.getPassword());
 
         return toResponseDTO(userRepository.save(userEntity));
     }
@@ -56,9 +58,9 @@ public class UserService {
     private UserResponseDTO toResponseDTO(UserEntity userEntity) {
         UserResponseDTO dto = new UserResponseDTO();
         dto.setID(userEntity.getID());
-        dto.setFirstname(userEntity.getFirstName());
-        dto.setLastname(userEntity.getLastName());
+        dto.setUsername(userEntity.getUsername());
+        dto.setPassword(userEntity.getPassword());
+        dto.setRole(userEntity.getRole());
         return dto;
     }
-
 }
