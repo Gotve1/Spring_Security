@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class UserRedirectController {
 
-    @GetMapping("/users")
+/*    @GetMapping("/users")
     public String redirectToUsers() {
         return "redirect:/users/";
     }
@@ -19,6 +19,6 @@ public class UserRedirectController {
     @GetMapping("/users/all")
     public String redirectToAllUsers() {
         return "redirect:/users/all/";
-    }
+    }*/
 
 }
