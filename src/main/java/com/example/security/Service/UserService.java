@@ -17,6 +17,9 @@ public class UserService {
     private UserRepository userRepository;
 
     public UserResponseDTO createUser(UserRequestDTO dto) {
+        if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
+            throw new com.example.security.Configration.Exceptions.UserAlreadyRegisteredException(dto.getUsername());
+        }
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(dto.getUsername());
         userEntity.setPassword(dto.getPassword());
