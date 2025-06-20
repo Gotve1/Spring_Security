@@ -21,7 +21,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/*").permitAll()
                         .requestMatchers(/*HttpMethod.POST,*/"/users/add").permitAll()
-                        //.requestMatchers("/users/add/*").authenticated()
+                        .requestMatchers("/update/").authenticated()
+                        .requestMatchers("/users/update-self/").authenticated()
                         .requestMatchers("/users/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

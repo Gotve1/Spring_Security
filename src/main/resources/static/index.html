@@ -29,11 +29,10 @@
         // Basic Auth: username "user", password ""
         const credentials = btoa('superuser:superuser');
 
-        fetch('http://localhost:8080/users/add/', {
+        fetch('http://localhost:8080/users/add', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + credentials
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(payload)
         })

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>Update Your Password</h1>
+<input type="password" id="passwordField" placeholder="New password">
+<input id="username" placeholder="New username">
+<button id="submitButton">Update Password</button>
+
+<script>
+    document.getElementById('submitButton').addEventListener('click', function() {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('passwordField').value.trim();
+
+        if (!password || !username) {
+            alert('Please enter a new password.');
+            return;
+        }
+
+        const payload = {
+            username: username,
+            password: password
+        };
+
+        fetch('/users/update-self/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Password updated successfully.');
+                } else {
+                    alert('Update failed.');
+                }
+            })
+            .catch(error => {
+                alert('An error occurred.');
+            });
+    });
+</script>
+
+</body>
+</html>
