@@ -15,4 +15,7 @@ public class UserRequestDTO {
     @Size(min = 6, max = 16)
     private String Password;
 
+    private double latitude;
+    private double longitude;
+
 }

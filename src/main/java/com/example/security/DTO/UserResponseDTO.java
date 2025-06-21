@@ -10,5 +10,7 @@ public class UserResponseDTO {
     private String username;
     private String Password;
     private Roles Role;
+    private double latitude;
+    private double longitude;
 
 }

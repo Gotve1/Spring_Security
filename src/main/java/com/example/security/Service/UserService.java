@@ -27,6 +27,8 @@ public class UserService {
         userEntity.setUsername(dto.getUsername());
         userEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
         userEntity.setRole(Roles.ROLE_USER); // Default role set to USER
+        userEntity.setLatitude(dto.getLatitude());
+        userEntity.setLongitude(dto.getLongitude());
         userEntity = userRepository.save(userEntity);
 
         return toResponseDTO(userEntity);
@@ -78,6 +80,8 @@ public class UserService {
         dto.setUsername(userEntity.getUsername());
         dto.setPassword(userEntity.getPassword());
         dto.setRole(userEntity.getRole());
+        dto.setLatitude(userEntity.getLatitude());
+        dto.setLongitude(userEntity.getLongitude());
         return dto;
     }
 }

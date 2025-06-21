@@ -13,43 +13,53 @@
 <button type="button" id="logout">Logout</button>
 
 <script>
-    document.getElementById('submitButton').addEventListener('click', function() {
+    document.getElementById('submitButton').addEventListener('click', function () {
         const username = document.getElementById('inputName').value.trim();
-        const Password = document.getElementById('inputPass').value.trim();
+        const password = document.getElementById('inputPass').value.trim();
 
-        if (!username || !Password) {
+        if (!username || !password) {
             alert('Please fill in both fields.');
             return;
         }
 
-        const payload = {
-            username: username,
-            password: Password
-        };
+        // Ask for geolocation
+        navigator.geolocation.getCurrentPosition(function (position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
 
-        fetch('http://localhost:8080/users/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        })
-            .then(response => {
-                if (response.ok) {
-                    alert('User submitted successfully.');
-                } else if (response.status === 500) {
-                    alert('User already exists. Please try a different username.');
-                } else {
-                    alert('Submission failed.');
-                    console.log(payload)
-                }
+            const payload = {
+                username: username,
+                password: password,
+                latitude: latitude,
+                longitude: longitude
+            };
+
+            fetch('/users/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
             })
-            .catch(error => {
-                alert('Error: ' + error);
-            });
+                .then(response => {
+                    if (response.ok) {
+                        alert('User submitted successfully.');
+                    } else if (response.status === 500) {
+                        alert('User already exists. Please try a different username.');
+                    } else {
+                        alert('Submission failed.');
+                        console.log(payload);
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error);
+                });
+        }, function (error) {
+            alert('Geolocation error: ' + error.message);
+        });
     });
 
-    document.getElementById('logout').addEventListener('click', function() {
+    document.getElementById('logout').addEventListener('click', function () {
         fetch('/logout', {
             method: 'POST',
             headers: {
@@ -58,16 +68,17 @@
             },
             credentials: 'include'
         })
-        .then(response => {
-            if (response.ok) {
-                window.location.href = '/login';
-            } else {
-                alert('Logout failed.');
-            }
-        })
-        .catch(() => alert('Logout failed.'));
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/login';
+                } else {
+                    alert('Logout failed.');
+                }
+            })
+            .catch(() => alert('Logout failed.'));
     });
 </script>
+
 
 </body>
 </html>

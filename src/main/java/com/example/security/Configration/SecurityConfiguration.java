@@ -39,8 +39,8 @@ public class SecurityConfiguration {
                 .permitAll()
                 .and()
                 .rememberMe()
-                .key("uniqueAndSecret")
-                .tokenValiditySeconds(1209600)
+                .key("newSecretTokenRememberMeKey")
+                .tokenValiditySeconds(1)
                 .rememberMeParameter("rememberMe")
                 .userDetailsService(CustomUserDetailsService);
 
