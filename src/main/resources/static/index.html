@@ -6,15 +6,16 @@
 </head>
 <body>
 <h1>Welcome to the homepage</h1>
-<input type="text" id="inputField" placeholder="username">
-<input type="text" id="inputField2" placeholder="password">
+<input type="text" id="inputName" placeholder="username">
+<input type="text" id="inputPass" placeholder="password">
 <button id="submitButton">Submit</button>
-
+<p><a href="/login">Log in</a></p>
+<button type="button" id="logout">Logout</button>
 
 <script>
     document.getElementById('submitButton').addEventListener('click', function() {
-        const username = document.getElementById('inputField').value.trim();
-        const Password = document.getElementById('inputField2').value.trim();
+        const username = document.getElementById('inputName').value.trim();
+        const Password = document.getElementById('inputPass').value.trim();
 
         if (!username || !Password) {
             alert('Please fill in both fields.');
@@ -25,9 +26,6 @@
             username: username,
             password: Password
         };
-
-        // Basic Auth: username "user", password ""
-        const credentials = btoa('superuser:superuser');
 
         fetch('http://localhost:8080/users/add', {
             method: 'POST',
@@ -49,6 +47,25 @@
             .catch(error => {
                 alert('Error: ' + error);
             });
+    });
+
+    document.getElementById('logout').addEventListener('click', function() {
+        fetch('/logout', {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            credentials: 'include'
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = '/login';
+            } else {
+                alert('Logout failed.');
+            }
+        })
+        .catch(() => alert('Logout failed.'));
     });
 </script>
 

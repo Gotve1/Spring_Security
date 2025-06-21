@@ -6,6 +6,7 @@ import com.example.security.Model.Roles;
 import com.example.security.Model.UserEntity;
 import com.example.security.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UserResponseDTO createUser(UserRequestDTO dto) {
         if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
@@ -22,7 +25,7 @@ public class UserService {
         }
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(dto.getUsername());
-        userEntity.setPassword(dto.getPassword());
+        userEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
         userEntity.setRole(Roles.ROLE_USER); // Default role set to USER
         userEntity = userRepository.save(userEntity);
 
