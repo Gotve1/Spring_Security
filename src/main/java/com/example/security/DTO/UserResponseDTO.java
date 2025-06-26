@@ -3,6 +3,8 @@ package com.example.security.DTO;
 import com.example.security.Model.Roles;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class UserResponseDTO {
 
@@ -12,5 +14,6 @@ public class UserResponseDTO {
     private Roles Role;
     private double latitude;
     private double longitude;
+    private LocalDate date;
 
 }

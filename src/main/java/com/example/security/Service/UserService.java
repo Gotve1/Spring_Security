@@ -1,5 +1,6 @@
 package com.example.security.Service;
 
+import com.example.security.Configration.Exceptions.UserAlreadyRegisteredException;
 import com.example.security.DTO.UserRequestDTO;
 import com.example.security.DTO.UserResponseDTO;
 import com.example.security.Model.Roles;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -19,16 +21,29 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private UserResponseDTO toResponseDTO(UserEntity userEntity) {
+        UserResponseDTO dto = new UserResponseDTO();
+        dto.setID(userEntity.getID());
+        dto.setUsername(userEntity.getUsername());
+        dto.setPassword(userEntity.getPassword());
+        dto.setRole(userEntity.getRole());
+        dto.setLatitude(userEntity.getLatitude());
+        dto.setLongitude(userEntity.getLongitude());
+        dto.setDate(userEntity.getDate());
+        return dto;
+    }
+
     public UserResponseDTO createUser(UserRequestDTO dto) {
         if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
-            throw new com.example.security.Configration.Exceptions.UserAlreadyRegisteredException(dto.getUsername());
+            throw new UserAlreadyRegisteredException(dto.getUsername());
         }
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(dto.getUsername());
         userEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
-        userEntity.setRole(Roles.ROLE_USER); // Default role set to USER
+        userEntity.setRole(Roles.ROLE_USER);
         userEntity.setLatitude(dto.getLatitude());
         userEntity.setLongitude(dto.getLongitude());
+        userEntity.setDate(LocalDate.now());
         userEntity = userRepository.save(userEntity);
 
         return toResponseDTO(userEntity);
@@ -72,16 +87,5 @@ public class UserService {
         // save the updated user entity
         userEntity = userRepository.save(userEntity);
         return toResponseDTO(userEntity);
-    }
-
-    private UserResponseDTO toResponseDTO(UserEntity userEntity) {
-        UserResponseDTO dto = new UserResponseDTO();
-        dto.setID(userEntity.getID());
-        dto.setUsername(userEntity.getUsername());
-        dto.setPassword(userEntity.getPassword());
-        dto.setRole(userEntity.getRole());
-        dto.setLatitude(userEntity.getLatitude());
-        dto.setLongitude(userEntity.getLongitude());
-        return dto;
     }
 }

@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class UserRequestDTO {
 
@@ -17,5 +19,6 @@ public class UserRequestDTO {
 
     private double latitude;
     private double longitude;
+    private LocalDate date;
 
 }

@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,12 +29,15 @@ public class UserEntity {
 
     @NotBlank
     @Column(nullable = false)
-    private String Password;
+    private String password;
 
     @Enumerated(EnumType.STRING)
     private Roles Role;
 
     private double latitude;
     private double longitude;
+
+    @CreationTimestamp
+    private LocalDate date;
 
 }

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -22,27 +23,33 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .cors(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/*").permitAll()
-                        .requestMatchers(/*HttpMethod.POST,*/"/users/add").permitAll()
-                        .requestMatchers("/update/").authenticated()
-                        .requestMatchers("/users/update-self/").authenticated()
-                        .requestMatchers("/users/**").hasRole("ADMIN")
+                .csrf(AbstractHttpConfigurer::disable)
 
+                .authorizeHttpRequests(auth -> auth
+
+                        .requestMatchers("/*").permitAll()
                         .requestMatchers("/login/*").authenticated()
+
+                        .requestMatchers(HttpMethod.POST,"/users/add").permitAll()
+                        .requestMatchers("/update/").authenticated()
+                        .requestMatchers("/users", "/users/*").hasRole("ADMIN")
+                        .requestMatchers("/users/update-self/").authenticated()
                         .anyRequest().authenticated()
                 )
+
                 .httpBasic(Customizer.withDefaults())
-                .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .and()
-                .rememberMe()
-                .key("newSecretTokenRememberMeKey")
-                .tokenValiditySeconds(1)
-                .rememberMeParameter("rememberMe")
-                .userDetailsService(CustomUserDetailsService);
+
+                .formLogin(form -> form
+                    .loginPage("/login")
+                    .permitAll()
+                )
+
+                .rememberMe(remember -> remember
+                    .key("newSecretTokenRememberMeKey")
+                    .tokenValiditySeconds(999999)
+                    .rememberMeParameter("rememberMe")
+                    .userDetailsService(CustomUserDetailsService)
+                );
 
         return http.build();
     }
