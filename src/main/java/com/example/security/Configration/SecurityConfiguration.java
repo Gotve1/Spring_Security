@@ -26,14 +26,13 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
 
                 .authorizeHttpRequests(auth -> auth
-
                         .requestMatchers("/*").permitAll()
                         .requestMatchers("/login/*").authenticated()
 
                         .requestMatchers(HttpMethod.POST,"/users/add").permitAll()
-                        .requestMatchers("/update/").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/update/").authenticated()
                         .requestMatchers("/users", "/users/*").hasRole("ADMIN")
-                        .requestMatchers("/users/update-self/").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/users/update-self/").authenticated()
                         .anyRequest().authenticated()
                 )
 

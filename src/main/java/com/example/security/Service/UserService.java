@@ -67,7 +67,7 @@ public class UserService {
     public UserResponseDTO updateUser(Long ID, UserRequestDTO dto) {
         UserEntity userEntity = getUserEntity(ID);
         userEntity.setUsername(dto.getUsername());
-        userEntity.setPassword(dto.getPassword());
+        userEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         return toResponseDTO(userRepository.save(userEntity));
     }
@@ -81,10 +81,9 @@ public class UserService {
     public UserResponseDTO updateUserByUsername(String username, UserRequestDTO dto) {
         UserEntity userEntity = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        // Only allow updating certain fields (e.g., password)
-        userEntity.setPassword(dto.getPassword());
         userEntity.setUsername(dto.getUsername());
-        // save the updated user entity
+        userEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
+
         userEntity = userRepository.save(userEntity);
         return toResponseDTO(userEntity);
     }

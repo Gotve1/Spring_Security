@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -44,7 +45,7 @@ public class UserController {
     }
 
     @PutMapping("/update-self/")
-    public ResponseEntity<UserResponseDTO> updateSelf(@RequestBody @Valid UserRequestDTO userDTO, java.security.Principal principal) {
+    public ResponseEntity<UserResponseDTO> updateSelf(@RequestBody @Valid UserRequestDTO userDTO, Principal principal) {
         String username = principal.getName();
         return ResponseEntity.ok(userService.updateUserByUsername(username, userDTO));
     }
